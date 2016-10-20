@@ -166,85 +166,121 @@ function User(){
 
         });
     };
-	
-	this.registerDevice=function(devObj,res){
-connection.acquire(function(err,con){
-con.query('insert into device(id,token) values(?,?)',[devObj.id,devObj.token],function(err,result){
-if(err){
-res.send('error occurred.Please try again');
-}else{
-res.send("Updated successfully");
-}
-});
-});
-};
 
-this.getDevice=function(devObj,res){
-connection.acquire(function(err,con){
-con.query('select id,token from device where id=?',[devObj.id],function(err,result){
-if(err){
-console.log('failed');
-res.send('Error Occurred. Please try again!');
-}else{
-console.log(result);
-var sql=con.query('update device SET flag=? where id=?',["true",devObj.id],function(err,result1){
-if(err){
-console.log(sql.sql);
-res.send('Error Occurred.Please try again');
-}else{
-console.log(sql.sql);
-res.send('Successfully Updated');
-}
-});
-}
-});
-});
-};
+    this.getAnswerObject=function(ansId,res){
+        connection.acquire(function(err,con){
+            var uId;
+            con.query('select id from patient where username=?',[ansId.username],function(err,result){
+                if(err){
+                    //res.send('Error Occured');
+                }else{
+                    console.log(result);
+                    uId=result[0].id;
+                    //console.log(uId);
+                    con.query('select medication,diet,physical,smoking,weight,alcohol from answer where id=?',[uId],function(err,result){
+                        if(err){
+                            res.send('Error Occured');
+                        }else{
+                            res.send(result);
+                        }
+                    });
+                }
+            });
 
-this.getAllDevices=function(res){
-connection.acquire(function(err,con){
-con.query('select * from device where flag="true"',function(err,result){
-if(err){
-res.send('Error Occurred. Please try again!');
-}else{
-res.send(result);
-}
-});
-});
-};
+        });
+    };
 
-this.push=function(userObj,res){
-var fcmCli = new FCM(serverKey);
+    this.registerDevice=function(devObj,res){
+        connection.acquire(function(err,con){
+            con.query('insert into device(id,token) values(?,?)',[devObj.id,devObj.token],function(err,result){
+                if(err){
+                    res.send('error occurred.Please try again');
+                }else{
+                    res.send("Updated successfully");
+                }
+            });
+        });
+    };
 
-var content="Username: "+userObj.username+"Password: "+userObj.password;
-var payload = {
-      to : userObj.token,
-      priority : 'high',
-      notification: {
-      title : 'Clinic App',
-      body :content 
-     }
-  };
-fcmCli.send(payload, function (err, result) {
-if(err){
-console.error(err);
-res.status(400).send({'status':'Unable to send the notification'});
-}else{
-console.log(result);
-connection.acquire(function(err,con){
-var sql=con.query('update device SET flag="false" where id=?',[userObj.id],function(err,result1){
-if(err){
-console.log(sql.sql);
-console.log(err);
-res.send('Error Occurred.Please try again!');
-}else{
-res.send('Message sent to the user!');
-}
-});
-});
-}
-});
-};
+    this.getRequests = function(devObj,res){
+        connection.acquire(function(err,con){
+            con.query('select * from device where flag=?',["false"],function(err,result){
+                if(err){
+                    res.send('error occurred.Please try again');
+                }else{
+                    var data = {"data":result};
+                    res.send(data);
+                }
+            });
+        });
+    };
+
+    this.getDevice=function(devObj,res){
+        connection.acquire(function(err,con){
+            con.query('select id,token from device where id=?',[devObj.id],function(err,result){
+                if(err){
+                    console.log('failed');
+                    res.send('Error Occurred. Please try again!');
+                }else{
+                    console.log(result);
+                    var sql=con.query('update device SET flag=? where id=?',["true",devObj.id],function(err,result1){
+                        if(err){
+                            console.log(sql.sql);
+                            res.send('Error Occurred.Please try again');
+                        }else{
+                            console.log(sql.sql);
+                            res.send('Successfully Updated');
+                        }
+                    });
+                }
+            });
+        });
+    };
+
+    this.getAllDevices=function(res){
+        connection.acquire(function(err,con){
+            con.query('select * from device where flag="true"',function(err,result){
+                if(err){
+                    res.send('Error Occurred. Please try again!');
+                }else{
+                    res.send(result);
+                }
+            });
+        });
+    };
+
+    this.push=function(userObj,res){
+        var fcmCli = new FCM(serverKey);
+
+        var content="Username: "+userObj.username+"Password: "+userObj.password;
+        var payload = {
+            to : userObj.token,
+            priority : 'high',
+            notification: {
+                title : 'Clinic App',
+                body :content
+            }
+        };
+        fcmCli.send(payload, function (err, result) {
+            if(err){
+                console.error(err);
+                res.status(400).send({'status':'Unable to send the notification'});
+            }else{
+                console.log(result);
+                connection.acquire(function(err,con){
+                    var sql=con.query('update device SET flag="false" where id=?',[userObj.id],function(err,result1){
+                        if(err){
+                            console.log(sql.sql);
+                            console.log(err);
+                            res.send('Error Occurred.Please try again!');
+                        }else{
+                            res.send('Message sent to the user!');
+                        }
+                    });
+                });
+            }
+        });
+    };
 
 }
 module.exports=new User();

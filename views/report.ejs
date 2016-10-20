@@ -18,11 +18,24 @@
         #print_sample{
             float:right;
         }
+        #summary_header{
+            background-color: chocolate;
+        }
+        #table_summary tbody{
+            background-color: white;
+        }
+        span{
+            margin-left: 5px;
+            font-weight: bold;
+        }
 
     </style>
 </head>
 <body background="views/images/clinic1_background.jpg">
 <div class="container">
+    <label>First Name: </label><span id="firstname"></span><br>
+    <label>Last Name: </label><span id="lastname"></span><br>
+    <label>Gender: </label><span id="gender"></span><br>
     <img src="views/images/print_icon.jpg" id="print_sample" height="30" width="30"/>
     <table id="table_report" class="table table-striped">
         <thead>
@@ -35,20 +48,28 @@
 
         </tbody>
     </table>
-
-    <table id="table_summary" class="table">
-        <thead>
+    <h4>Report</h4>
+    <table id="table_summary" class="table table-bordered">
+        <thead id="summary_header">
             <tr>
                 <th>Section</th>
-                <
+                <th>Score</th>
+                <th>Adherent/Not Adherent</th>
             </tr>
         </thead>
+        <tbody>
+
+        </tbody>
     </table>
 
 
 </div>
     <script>
         $(document).ready(function() {
+            var patient = JSON.parse(sessionStorage.getItem("patient_data"));
+            $("#firstname").html(patient['firstname']);
+            $("#lastname").html(patient['lastname']);
+            $("#gender").html(patient['gender']);
             $("#print_sample").click(function () {
                 window.print();
             })
@@ -56,7 +77,7 @@
                 url: '/getReport',
                 type: 'post',
                 dataType: 'json',
-                data:{'username':'arampall'},
+                data:{'username':patient.username},
                 success: function (data) {
                     console.log(data);
                     var arr = ["physical","diet","alcohol","smoking","medication"];
@@ -71,8 +92,85 @@
                 }
             });
 
+            $.ajax({
+                url: '/getResponse',
+                type: 'post',
+                dataType: 'json',
+                data:{'username':'arampall'},
+                success: function (data) {
+                    console.log(data);
+                    var arr = ["physical","diet","alcohol","smoking","medication"];
+                    var response = data[0];
+                    for(var p=0; p<arr.length;p++){
+                        var total_sum = sum(response[arr[p]]);
+                        var adherence = isAdherent(arr[p],total_sum);
+                        $('#table_summary > tbody:last').append("<tr><td>"+arr[p]+"</td><td>"+ total_sum+"</td><td>"+ adherence+"</td></tr>");
+                    }
+
+
+                }
+            });
+
+            function sum(response) {
+                var new_arr = response.split(",");
+                var sum = 0;
+                for(var i=0;i<new_arr.length;i++){
+                    if(new_arr[i]!='')
+                    sum = sum + parseInt(new_arr[i]);
+                }
+                return sum;
+            }
+
+            function isAdherent(section,sum) {
+                var answer=null;
+                if(section=="physical"){
+                    if(sum>8){
+                        answer="adherent";
+                    }
+                    else{
+                        answer = "Not Adherent";
+                    }
+                }
+                else if(section=="diet"){
+                    if(sum>52){
+                        answer="adherent";
+                    }
+                    else{
+                        answer = "Not Adherent";
+                    }
+                }
+                else if(section=="alcohol"){
+                    if(sum<14){
+                        answer="adherent";
+                    }
+                    else{
+                        answer = "Not Adherent";
+                    }
+                }
+                else if(section=="smoking"){
+                    if(sum==0){
+                        answer="adherent";
+                    }
+                    else{
+                        answer = "Not Adherent";
+                    }
+                }
+                else if(section=="medication"){
+                    if(sum==21){
+                        answer="adherent";
+                    }
+                    else{
+                        answer = "Not Adherent";
+                    }
+                }
+                else {
+                    answer=null;
+                }
+                return answer;
+            }
+
         })
-        //console.log(JSON.parse(sessionStorage.getItem("patient_data")));
+
     </script>
 </body>
 </html>

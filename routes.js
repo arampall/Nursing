@@ -35,6 +35,11 @@ module.exports={
             user.getAnswer(req.body,res);
         });
 
+        app.post('/getResponse/',function(req,res){
+            user.getAnswerObject(req.body,res);
+        });
+
+
         app.get('/',function(req,res){
             var clinic_session = req.session;
             if(!clinic_session.username){
@@ -75,6 +80,23 @@ module.exports={
         });
         app.post('/pushNotification/',function(req,res){
             user.push(req.body,res);
+        });
+
+        app.get('/pendingrequests/',function(req,res){
+            user.getRequests(req,res);
+        });
+
+        app.get('/requests/',function(req,res){
+            res.render('requests.ejs');
+        });
+
+        app.get('/logout/',function(req,res){
+            req.session.destroy();
+            res.redirect('/');
+        });
+
+        app.get('/sendCreds/',function(req,res){
+            res.render('sendCredentials.ejs');
         });
 
     }
