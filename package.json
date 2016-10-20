@@ -23,6 +23,7 @@
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "express-session": "^1.14.1",
+    "fcm-node": "^1.0.15",
     "jade": "^1.11.0",
     "jsonwebtoken": "^7.1.9",
     "node-mysql": "^0.4.2"
