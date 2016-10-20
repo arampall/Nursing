@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body
+        {
+            padding-top:100px;
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        .container{
+            float:right;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body background="views/images/clinic_background.jpg">
+<div class="container">
+
+    <div class="col-sm-6 col-sm-offset-3">
+        <form action="/getAdmin" method="post">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" name="username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Login</button>
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+</script>
+</body>
+</html>

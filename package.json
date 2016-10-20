@@ -1,0 +1,30 @@
+{
+  "name": "nursing",
+  "version": "1.0.0",
+  "description": "A nursing app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arampall/Nursing.git"
+  },
+  "author": "Achyut",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arampall/Nursing/issues"
+  },
+  "homepage": "https://github.com/arampall/Nursing#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookieparser": "^0.1.0",
+    "crypto-js": "^3.1.7",
+    "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
+    "express-session": "^1.14.1",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "^7.1.9",
+    "node-mysql": "^0.4.2"
+  }
+}

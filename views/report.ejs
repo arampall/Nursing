@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <title>Login</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body
+        {
+            padding-top:100px;
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        input{
+            width: 30px;
+        }
+        #print_sample{
+            float:right;
+        }
+
+    </style>
+</head>
+<body background="views/images/clinic1_background.jpg">
+<div class="container">
+    <img src="views/images/print_icon.jpg" id="print_sample" height="30" width="30"/>
+    <table id="table_report" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Option</th>
+            </tr>
+        </thead>
+        <tbody id="tbody_report">
+
+        </tbody>
+    </table>
+
+    <table id="table_summary" class="table">
+        <thead>
+            <tr>
+                <th>Section</th>
+                <
+            </tr>
+        </thead>
+    </table>
+
+
+</div>
+    <script>
+        $(document).ready(function() {
+            $("#print_sample").click(function () {
+                window.print();
+            })
+            $.ajax({
+                url: '/getReport',
+                type: 'post',
+                dataType: 'json',
+                data:{'username':'arampall'},
+                success: function (data) {
+                    console.log(data);
+                    var arr = ["physical","diet","alcohol","smoking","medication"];
+                    for(var p=0; p<arr.length;p++){
+                        var new_arr = data[arr[p]];
+                        for(var i=0;i<new_arr.length;i++){
+                            $('#table_report > tbody:last').append("<tr><td>"+new_arr[i].question+"</td><td>"+ new_arr[i].response+"</td></tr>");
+                        }
+                    }
+
+
+                }
+            });
+
+        })
+        //console.log(JSON.parse(sessionStorage.getItem("patient_data")));
+    </script>
+</body>
+</html>

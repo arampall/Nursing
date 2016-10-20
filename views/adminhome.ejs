@@ -1,0 +1,69 @@
+<html>
+<head>
+    <title>Patient Data</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
+    <style>
+        body{
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        #patients-table{
+            margin-top:70px;
+        }
+
+    </style>
+</head>
+<body background="views/images/clinic1_background.jpg">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/patients">Home</a></li>
+            <li class="nav-button"><a href="/register">Register User</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+            <li class="nav-button pull-right"><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="nav navbar">
+        <button class="btn btn-warning">Create a New User</button>
+    </div>
+
+    <table id="patients-table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#patients-table').DataTable( {
+            ajax: "/getAllUserDetails",
+            columns: [
+                { "data": "firstname" },
+                { "data": "lastname" },
+                { "data": "gender" }
+            ]
+        } );
+        $('#patients-table tbody').on( 'click', 'tr', function () {
+            sessionStorage.setItem("patient_data", JSON.stringify(table.row( this ).data()));
+            location.href ="/report";
+        } );
+    } );
+</script>
+</body>
+</html>

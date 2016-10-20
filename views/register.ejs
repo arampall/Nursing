@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        body
+        {
+            padding-top:80px;
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        .container{
+            width:50%;
+        }
+    </style>
+</head>
+<body background="views/images/clinic2-background.jpg">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">WebSiteName</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/patients">Home</a></li>
+            <li class="active"><a href="/register">Register User</a></li>
+        </ul>
+        <ul class="nav navbar-nav pull-right">
+            <li class="nav-button pull-right"><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+
+    <div class="col-sm-6 col-sm-offset-3">
+
+        <h1 class="text-center"> Register</h1>
+        <form action="/createUser" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" name="firstname" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Email ID">
+            </div>
+            <div class="form-group">
+                <input id="datepicker" class="form-control" name="dob" placeholder="Date of Birth">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="gender" placeholder="Gender">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary col-sm-12">Login</button>
+        </form>
+
+    </div>
+
+</div>
+<script>
+        $( "#datepicker" ).datepicker();
+</script>
+</body>
+</html>
